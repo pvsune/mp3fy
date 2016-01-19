@@ -12,7 +12,7 @@ use LWP::Simple;
 use File::Copy;
 
 my %summary;
-my @songs = ('ironic alanis', 'under the bridge red hot chili peppers');
+my @songs = ('roses the chainsmokers', 'hide away daya');
 for (@songs) {
     my $t = download_song($_) ? 'ok' : 'fail';
     push @{ $summary{$t} }, $_;
@@ -57,7 +57,7 @@ sub download_song {
         my $duration = int ( ($info->{song_length_ms}/1000) + 0.5 ); # WANT: better round off
         my $dl_dir = '/home/pvsune/Desktop/MP3';
 
-        if ($duration == $g_duration && $info->{bitrate} >= 128000) { # >= 128 kbps
+        if ($duration == $g_duration && $duration > 30 && $info->{bitrate} >= 128000) { # skip previews, >= 128 kbps
             copy($file, "$dl_dir/$title.mp3") or die "Copy failed: $!";
             say "Downloaded \"$title\"\n";
             return 1;
